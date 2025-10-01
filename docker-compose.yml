@@ -1,8 +1,8 @@
 version: "3.8"
 services:
-  ros:
+  sim:
     image: ros-humble-arm64
-    container_name: ros-shell
+    container_name: ros-sim
     platform: linux/arm64
     tty: true
     stdin_open: true
@@ -10,3 +10,22 @@ services:
       - ./workspace:/workspace
     tmpfs:
       - /tmp
+    environment:
+      - ROS_DOMAIN_ID=30
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_LOCALHOST_ONLY=0
+
+  rviz:
+    image: ros-humble-rviz
+    container_name: ros-rviz
+    platform: linux/arm64
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1
+      - ROS_DOMAIN_ID=30
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - ROS_LOCALHOST_ONLY=0
+    depends_on:
+      - sim
+    tty: true
+    stdin_open: true

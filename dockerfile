@@ -12,6 +12,10 @@ RUN apt-get update && apt-get install -y \
     # Cartographer
     ros-humble-cartographer \
     ros-humble-cartographer-ros \
+    # extensions
+    python3-colcon-common-extensions \
+    ros-humble-ros-gz-bridge \
+    ros-humble-ros-gz-sim \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
@@ -24,12 +28,12 @@ RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg -o /usr/share/keyrin
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-prerelease $(lsb_release -cs) main" \
         > /etc/apt/sources.list.d/gazebo-prerelease.list && \
     apt-get update && \
-    apt-get install -y gz-fortress \
-    ros-humble-ros-gz-bridge \
-    ros-humble-ros-gz-sim
+    apt-get install -y gz-fortress
+
 
 SHELL ["/bin/bash","-lc"]
 
+# Scripts
 COPY scripts/setup.sh /tmp/setup.sh
 RUN bash /tmp/setup.sh
 
