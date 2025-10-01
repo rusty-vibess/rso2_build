@@ -24,7 +24,6 @@ services:
       - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_LOCALHOST_ONLY=0
     ports:
-      - "6080:6080"   # noVNC (browser)
-      - "5900:5900"   # VNC client (optional)
+      - "6080:6080"   # expose noVNC
     depends_on:
       - sim
