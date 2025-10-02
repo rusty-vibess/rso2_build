@@ -38,3 +38,5 @@ services:
       - "6080:6080" # expose noVNC
     depends_on:
       - sim
+    tmpfs:
+      - /tmp

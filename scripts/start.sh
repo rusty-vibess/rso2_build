@@ -1,21 +1,33 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
+# Env
 export DISPLAY=:0
 export QT_X11_NO_MITSHM=1
 export LIBGL_ALWAYS_SOFTWARE=1
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
+export XDG_RUNTIME_DIR=/tmp/runtime-root
+mkdir -p "$XDG_RUNTIME_DIR"
 
-# Virtual X screen
-Xvfb :0 -screen 0 1280x800x24 &
+# Clean X locks
+rm -f /tmp/.X0-lock /tmp/.X11-unix/X0 || true
+mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 
-# Window manager (may remove?)
-fluxbox &
+# X server
+Xvfb :0 -screen 0 1280x800x24 -ac &
+for i in {1..40}; do xdpyinfo -display :0 >/dev/null 2>&1 && break || sleep 0.25; done
 
-# Spin up VNC to capture display and forward to cweb VNC on :6080
+# WM
+fluxbox >/dev/null 2>&1 &
+
+# VNC
 x11vnc -display :0 -nopw -forever -shared -rfbport 5900 -quiet &
-websockify --web=/usr/share/novnc/ 6080 localhost:5900 &
-# Start rviz2
+for i in {1..40}; do (echo >/dev/tcp/127.0.0.1/5900) >/dev/null 2>&1 && break || sleep 0.25; done
+
+# noVNC
+websockify --web=/usr/share/novnc/ 0.0.0.0:6080 127.0.0.1:5900 &
+
+# RViz
 source /opt/ros/humble/setup.bash
 exec rviz2
