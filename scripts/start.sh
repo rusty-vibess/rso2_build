@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 set -eo pipefail
 
-# Vars
 export DISPLAY=:0
 export QT_X11_NO_MITSHM=1
-export LIBGL_ALWAYS_SOFTWARE=1   # force llvmpipe
+export LIBGL_ALWAYS_SOFTWARE=1
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 
 # Virtual X screen
 Xvfb :0 -screen 0 1280x800x24 &
 
-# Window manager (optional but nice)
+# Window manager (may remove?)
 fluxbox &
 
 # Spin up VNC to capture display and forward to cweb VNC on :6080
