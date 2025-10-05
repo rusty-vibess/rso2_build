@@ -12,31 +12,11 @@ services:
     tty: true
     stdin_open: true
 
+    environment:
+      - ROS_DOMAIN_ID=30
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - ROS_LOCALHOST_ONLY=0
     volumes:
       - ./workspace:/workspace
-    tmpfs:
-      - /tmp
-    environment:
-      - ROS_DOMAIN_ID=30
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_LOCALHOST_ONLY=0
-
-  rviz:
-    build:
-      context: .
-      dockerfile: dockerfile.rviz
-
-    container_name: ros-rviz
-    platform: linux/arm64
-    image: ros-humble-rviz-arm64:latest
-
-    environment:
-      - ROS_DOMAIN_ID=30
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_LOCALHOST_ONLY=0
     ports:
       - "6080:6080" # expose noVNC
-    depends_on:
-      - sim
-    tmpfs:
-      - /tmp

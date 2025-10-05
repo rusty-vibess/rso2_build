@@ -8,18 +8,23 @@ export LIBGL_ALWAYS_SOFTWARE=1
 export LANG=C.UTF-8
 export LC_ALL=C.UTF-8
 export XDG_RUNTIME_DIR=/tmp/runtime-root
-mkdir -p "$XDG_RUNTIME_DIR"
+mkdir -p "$XDG_RUNTIME_DIR" && chmod 0700 "$XDG_RUNTIME_DIR"
+
+# World
+WORLD="$1"
 
 # Clean X locks
 rm -f /tmp/.X0-lock /tmp/.X11-unix/X0 || true
 mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
 
-# X server
-Xvfb :0 -screen 0 1280x800x24 -ac &
-for i in {1..40}; do xdpyinfo -display :0 >/dev/null 2>&1 && break || sleep 0.25; done
+# Kill orphaned processes
+pkill -f Xvfb || true
+pkill -f x11vnc || true
+pkill -f websockify || true
 
-# WM
-fluxbox >/dev/null 2>&1 &
+# X server
+Xvfb :0 -screen 0 1280x720x24 -ac &
+for i in {1..40}; do xdpyinfo -display :0 >/dev/null 2>&1 && break || sleep 0.25; done
 
 # VNC
 x11vnc -display :0 -nopw -forever -shared -rfbport 5900 -quiet &
@@ -28,6 +33,9 @@ for i in {1..40}; do (echo >/dev/tcp/127.0.0.1/5900) >/dev/null 2>&1 && break ||
 # noVNC
 websockify --web=/usr/share/novnc/ 0.0.0.0:6080 127.0.0.1:5900 &
 
-# RViz
-source /opt/ros/humble/setup.bash
-exec rviz2
+echo '------------------'
+echo 'NoVNC window: http://localhost:6080/vnc.html?resize=remote'
+echo '------------------'
+
+# Run Gazebo in background so trap can catch signals
+ign gazebo "$WORLD"
