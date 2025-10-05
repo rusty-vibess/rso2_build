@@ -4,12 +4,12 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     ros-humble-rviz2 \
     ros-humble-rmw-cyclonedds-cpp \
-    libgl1-mesa-dri \ 
-    libgl1-mesa-glx \ 
+    libgl1-mesa-dri \
+    libgl1-mesa-glx \
     mesa-utils \
-    xvfb \ 
-    x11vnc \ 
-    fluxbox \ 
+    xvfb \
+    x11vnc \
+    fluxbox \
     novnc \
     websockify \
     && rm -rf /var/lib/apt/lists/*

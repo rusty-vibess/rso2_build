@@ -18,7 +18,7 @@ services:
       - /tmp
     environment:
       - ROS_DOMAIN_ID=30
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       - ROS_LOCALHOST_ONLY=0
 
   rviz:
@@ -32,7 +32,7 @@ services:
 
     environment:
       - ROS_DOMAIN_ID=30
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
+      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       - ROS_LOCALHOST_ONLY=0
     ports:
       - "6080:6080" # expose noVNC
