@@ -13,9 +13,10 @@ services:
     stdin_open: true
 
     environment:
-      - ROS_DOMAIN_ID=30
+      - ROS_DOMAIN_ID=120
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       - ROS_LOCALHOST_ONLY=0
+    network_mode: host
     volumes:
       - ./workspace:/workspace
     ports:

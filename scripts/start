@@ -11,7 +11,7 @@ export XDG_RUNTIME_DIR=/tmp/runtime-root
 mkdir -p "$XDG_RUNTIME_DIR" && chmod 0700 "$XDG_RUNTIME_DIR"
 
 # World
-WORLD="$1"
+WORLD="${WORLD:-$1}"
 
 # Clean X locks
 rm -f /tmp/.X0-lock /tmp/.X11-unix/X0 || true
@@ -31,11 +31,18 @@ x11vnc -display :0 -nopw -forever -shared -rfbport 5900 -quiet &
 for i in {1..40}; do (echo >/dev/tcp/127.0.0.1/5900) >/dev/null 2>&1 && break || sleep 0.25; done
 
 # noVNC
-websockify --web=/usr/share/novnc/ 0.0.0.0:6080 127.0.0.1:5900 &
+websockify --web=/usr/share/novnc/ 0.0.0.0:6080 0.0.0.0:5900 &
 
 echo '------------------'
 echo 'NoVNC window: http://localhost:6080/vnc.html?resize=remote'
 echo '------------------'
 
-# Run Gazebo in background so trap can catch signals
-ign gazebo "$WORLD"
+# source /opt/ros/humble/setup.bash
+# [ -f ~/turtlebot3_ws/install/setup.bash ] && source ~/turtlebot3_ws/install/setup.bash
+
+source ~/.bashrc
+if [ $# -gt 0 ]; then
+  exec "$@"
+else
+  exec ign gazebo "$WORLD"
+fi

@@ -11,13 +11,18 @@ RUN apt-get update && apt-get install -y \
     ros-humble-nav2-bringup \
     # Cartographer
     ros-humble-cartographer \
-    ros-humble-cartographer-ros \
+    ros-humble-cartographer-ros
+
+RUN apt-get install -y \
     # random extensions and deps
     python3-colcon-common-extensions \
     ros-humble-ros-gz-bridge \
     ros-humble-ros-gz-sim \
     lsb-release \
     gnupg \
+    vim
+
+RUN apt-get install -y \
     # GUI + noVNC deps
     libgl1-mesa-dri \
     libgl1-mesa-glx \
@@ -31,25 +36,35 @@ RUN apt-get update && apt-get install -y \
 
 RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg -o /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" \
-        > /etc/apt/sources.list.d/gazebo-stable.list && \
+    > /etc/apt/sources.list.d/gazebo-stable.list && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] https://packages.osrfoundation.org/gazebo/ubuntu-prerelease $(lsb_release -cs) main" \
-        > /etc/apt/sources.list.d/gazebo-prerelease.list && \
+    > /etc/apt/sources.list.d/gazebo-prerelease.list && \
     apt-get update && \
     apt-get install -y gz-fortress \
     && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get update && apt-get install -y \
-    # noVNC windowing deps
+    # noVNC additional windowing deps
     software-properties-common && \
     add-apt-repository universe && \
     apt-get update && \
     apt-get install -y xdotool \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && apt-get install -y python3 python3-pip && \
+    ln -s /usr/bin/python3 /usr/local/bin/python && \
+    rm -rf /var/lib/apt/lists/*
+
+# Installing Python deps
+RUN python3 -m pip install \
+    pybullet
+
 SHELL ["/bin/bash","-lc"]
 
 # Scripts
 COPY scripts/ /usr/scripts/
+COPY scripts/start /usr/local/bin/start_server
+RUN chmod +x /usr/local/bin/start_server
 RUN bash /usr/scripts/setup
 
 WORKDIR /workspace
