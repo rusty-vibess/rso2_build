@@ -63,8 +63,9 @@ SHELL ["/bin/bash","-lc"]
 
 # Scripts
 COPY scripts/ /usr/scripts/
-COPY scripts/start /usr/local/bin/start_server
-RUN chmod +x /usr/local/bin/start_server
+COPY scripts/ /usr/scripts/
+COPY scripts/start-sim.sh /usr/local/bin/start-sim
+RUN chmod +x /usr/local/bin/start-sim
 RUN bash /usr/scripts/setup
 
 WORKDIR /workspace

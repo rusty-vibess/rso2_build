@@ -4,20 +4,36 @@ services:
     build:
       context: .
       dockerfile: dockerfile
-
+    image: ros-humble-arm64:latest
     container_name: ros-sim
     platform: linux/arm64
-    image: ros-humble-arm64:latest
-
     tty: true
     stdin_open: true
-
+    network_mode: host
     environment:
       - ROS_DOMAIN_ID=120
       - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
       - ROS_LOCALHOST_ONLY=0
-    network_mode: host
     volumes:
       - ./workspace:/workspace
+    # command: ["/usr/local/bin/start-sim"]  # uncomment if not ENTRYPOINT
+
+  novnc_proxy:
+    build:
+      context: .
+      dockerfile: dockerfile.bridge
+    image: novnc-bridge:latest
+    container_name: vnc-bridge
     ports:
-      - "6080:6080" # expose noVNC
+      - "6080:6080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    environment:
+      - TARGET_HOST=host.docker.internal
+      - TARGET_PORT=5900
+      - LISTEN_PORT=6080
+      - NOVNC_WEB=/usr/share/novnc
+    depends_on:
+      - sim
+    restart: unless-stopped
+    command: ["/usr/local/bin/start-bridge"]

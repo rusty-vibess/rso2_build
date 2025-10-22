@@ -1,0 +1,19 @@
+# novnc + websockify only
+FROM ubuntu:22.04
+
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+    novnc websockify python3 python3-pip tini \
+    && rm -rf /var/lib/apt/lists/*
+
+# Default ports
+ENV LISTEN_PORT=6080 \
+    TARGET_HOST=ros-vnc \
+    TARGET_PORT=5900 \
+    NOVNC_WEB=/usr/share/novnc
+
+# tiny entry
+COPY scripts/start-bridge.sh /usr/local/bin/start-bridge
+RUN chmod +x /usr/local/bin/start-bridge
+ENTRYPOINT ["/usr/bin/tini","--"]
+CMD ["/usr/local/bin/start-bridge"]
