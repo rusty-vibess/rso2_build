@@ -28,8 +28,8 @@ resize
 ```
 
 ## Notes:
-- It's worth mentioning the process doesn't spin down gracefully at all. I'd recommend spamming `ctrl + c` a few times or `ctrl + \` for a hard kill. 
+- It's worth mentioning the ros-core server once started doesn't spin down gracefully. It stops eventually, but I'd recommend spamming `ctrl + c` a few times or `ctrl + \` for a hard kill.
 
-- No matter what I do there seems to be orphaned processes but `start` should properly kill any them before attempting to start a new instance and getting errors.
+- After spinning down the `ros-core` server there can be orphaned processes, this should not be an issue as running `start` again will look to kill stragglers but if existing processes are causing problems, stop the docker containers and start them again with `docker compose up`.
 
-- Ensure to set the appropriate IP addresses under Peers in `etc/cyclonedds.xml`, as LAN comms will fail without this config. You may also need to change settings like `ROS_DOMAIN_ID` in `docker-compose.yml`
+- Ensure to set the appropriate IP addresses under Peers in `etc/cyclonedds.xml`, as LAN based communication will fail without this being configured. You may also need to change settings like `ROS_DOMAIN_ID` in `docker-compose.yml`.
