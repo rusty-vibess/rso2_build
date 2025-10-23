@@ -1,11 +1,11 @@
 version: "3.9"
 services:
-  sim:
+  core:
     build:
       context: .
       dockerfile: dockerfile
     image: ros-humble-arm64:latest
-    container_name: ros-sim
+    container_name: ros-core
     platform: linux/arm64
     tty: true
     stdin_open: true
@@ -17,7 +17,6 @@ services:
       - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
     volumes:
       - ./workspace:/workspace
-    # command: ["/usr/local/bin/start-sim"]  # uncomment if not ENTRYPOINT
 
   novnc_proxy:
     build:
@@ -35,6 +34,6 @@ services:
       - LISTEN_PORT=6080
       - NOVNC_WEB=/usr/share/novnc
     depends_on:
-      - sim
+      - core
     restart: unless-stopped
     command: ["/usr/local/bin/start-bridge"]

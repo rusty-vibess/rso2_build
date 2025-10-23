@@ -62,12 +62,16 @@ RUN python3 -m pip install \
 
 SHELL ["/bin/bash","-lc"]
 
-# Copy files for image
-COPY scripts/ /usr/scripts/
+# Copy config and setup scripts
 COPY etc/ etc/
-COPY scripts/start-sim.sh /usr/local/bin/start-sim
-RUN chmod +x /usr/local/bin/start-sim
-RUN bash /usr/scripts/setup
+COPY scripts/setup.sh /usr/scripts/setup.sh
+# Copy usr bins
+COPY scripts/start /usr/local/bin/start
+COPY scripts/resize /usr/local/bin/resize
+RUN chmod +x /usr/local/bin/start
+RUN chmod +x /usr/local/bin/resize
+# Run setup
+RUN bash /usr/scripts/setup.sh
 
 WORKDIR /workspace
 CMD ["bash"]

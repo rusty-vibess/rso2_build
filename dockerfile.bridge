@@ -13,7 +13,8 @@ ENV LISTEN_PORT=6080 \
     NOVNC_WEB=/usr/share/novnc
 
 # tiny entry
-COPY scripts/start-bridge.sh /usr/local/bin/start-bridge
+COPY scripts/start-bridge /usr/local/bin/start-bridge
 RUN chmod +x /usr/local/bin/start-bridge
+# tini helps manage lifecycle stuff for small containers
 ENTRYPOINT ["/usr/bin/tini","--"]
 CMD ["/usr/local/bin/start-bridge"]
