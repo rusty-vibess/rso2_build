@@ -4,6 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     # Ros humble
     ros-humble-desktop \
+    ros-humble-rmw-cyclonedds-cpp \
     ros-humble-demo-nodes-cpp \
     ros-humble-demo-nodes-py \
     # Nav2
@@ -61,9 +62,9 @@ RUN python3 -m pip install \
 
 SHELL ["/bin/bash","-lc"]
 
-# Scripts
+# Copy files for image
 COPY scripts/ /usr/scripts/
-COPY scripts/ /usr/scripts/
+COPY etc/ etc/
 COPY scripts/start-sim.sh /usr/local/bin/start-sim
 RUN chmod +x /usr/local/bin/start-sim
 RUN bash /usr/scripts/setup

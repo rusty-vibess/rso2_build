@@ -1,0 +1,12 @@
+<CycloneDDS>
+  <Domain id="any">
+    <Discovery>
+      <Peers>
+        <!-- MacBook Pro Address -->
+        <Peer address="192.168.1.121"/>
+        <!-- TurtleBot1 Address -->
+        <Peer address="192.168.0.108"/>
+      </Peers>
+    </Discovery>
+  </Domain>
+</CycloneDDS>

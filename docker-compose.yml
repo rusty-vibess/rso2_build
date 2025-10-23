@@ -11,9 +11,10 @@ services:
     stdin_open: true
     network_mode: host
     environment:
-      - ROS_DOMAIN_ID=120
-      - RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+      - ROS_DOMAIN_ID=1
+      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
       - ROS_LOCALHOST_ONLY=0
+      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
     volumes:
       - ./workspace:/workspace
     # command: ["/usr/local/bin/start-sim"]  # uncomment if not ENTRYPOINT

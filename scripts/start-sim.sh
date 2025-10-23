@@ -26,5 +26,6 @@ until (echo > /dev/tcp/127.0.0.1/5900) >/dev/null 2>&1; do
   sleep 0.5
 done
 
+source ~/.bashrc
 # If args given, exec them; else run your default
 if [ $# -gt 0 ]; then exec "$@"; else exec ign gazebo "${WORLD:-}"; fi
