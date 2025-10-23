@@ -28,6 +28,8 @@ resize
 ```
 
 ## Notes:
-It's worth mentioning the process doesn't spin down gracefully at all. I'd recommend spamming `ctrl + c` a few times or `ctrl + \` for a hard kill. 
+- It's worth mentioning the process doesn't spin down gracefully at all. I'd recommend spamming `ctrl + c` a few times or `ctrl + \` for a hard kill. 
 
-No matter what I do there seems to be orphaned processes but `start` should properly kill any them before attempting to start a new instance and getting errors.
+- No matter what I do there seems to be orphaned processes but `start` should properly kill any them before attempting to start a new instance and getting errors.
+
+- Ensure to set the appropriate IP addresses under Peers in `etc/cyclonedds.xml`, as LAN comms will fail without this config. You may also need to change settings like `ROS_DOMAIN_ID` in `docker-compose.yml`
