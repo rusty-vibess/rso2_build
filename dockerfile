@@ -14,7 +14,7 @@ RUN apt-get update && apt-get install -y \
     ros-humble-cartographer \
     ros-humble-cartographer-ros
 
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     # random extensions and deps
     ros-humble-ros-gz-bridge \
     ros-humble-ros-gz-sim \
@@ -24,7 +24,7 @@ RUN apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Hardware acceleration tooling
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     libgl1-mesa-dri \
     libgl1-mesa-glx \
     mesa-utils \
@@ -44,7 +44,7 @@ RUN curl -sSL https://packages.osrfoundation.org/gazebo.gpg -o /usr/share/keyrin
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
-    python3-colcon-common-extensions \
+    python3-colcon-common-extensions && \
     ln -s /usr/bin/python3 /usr/local/bin/python \
     && rm -rf /var/lib/apt/lists/*
 
