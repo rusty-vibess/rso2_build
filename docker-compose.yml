@@ -6,34 +6,14 @@ services:
       dockerfile: dockerfile
     image: ros-humble-arm64:latest
     container_name: ros-core
-    platform: linux/arm64
     tty: true
     stdin_open: true
     network_mode: host
     environment:
-      - ROS_DOMAIN_ID=1
-      - RMW_IMPLEMENTATION=rmw_cyclonedds_cpp
-      - ROS_LOCALHOST_ONLY=0
-      - CYCLONEDDS_URI=file:///etc/cyclonedds.xml
+      ROS_DOMAIN_ID: 1
+      RMW_IMPLEMENTATION: rmw_cyclonedds_cpp
+      ROS_LOCALHOST_ONLY: 0
+      DISPLAY: ${DISPLAY}
     volumes:
       - ./workspace:/workspace
-
-  novnc_proxy:
-    build:
-      context: .
-      dockerfile: dockerfile.bridge
-    image: novnc-bridge:latest
-    container_name: vnc-bridge
-    ports:
-      - "6080:6080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    environment:
-      - TARGET_HOST=host.docker.internal
-      - TARGET_PORT=5900
-      - LISTEN_PORT=6080
-      - NOVNC_WEB=/usr/share/novnc
-    depends_on:
-      - core
-    restart: unless-stopped
-    command: ["/usr/local/bin/start-bridge"]
+      - /tmp/.X11-unix:/tmp/.X11-unix
