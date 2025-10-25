@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-DISPLAY=:0 xdotool search --onlyvisible --sync . windowsize 100% 100% windowmove 0 0

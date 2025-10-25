@@ -17,3 +17,4 @@ services:
     volumes:
       - ./workspace:/workspace
       - /tmp/.X11-unix:/tmp/.X11-unix
+      - /dev/dri:/dev/dri
